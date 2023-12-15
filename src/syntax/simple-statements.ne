@@ -44,10 +44,11 @@ simplestatements_set_timezone_val
     | %kw_default  {% x => track(x, { type: 'default'}) %}
     | kw_interval string kw_hour %kw_to kw_minute  {% x => track(x, { type: 'interval', value: unbox(x[1]) }) %}
 
-simplestatements_set_simple -> ident (%op_eq | %kw_to) simplestatements_set_val {% x  => track(x, {
+simplestatements_set_simple -> (kw_local | kw_session):? ident (%op_eq | %kw_to) simplestatements_set_val {% x  => track(x, {
         type: 'set',
-        variable: asName(x[0]),
-        set: unbox(x[2]),
+        variable: asName(x[1]),
+        scope: unwrap(x[0])?.toLowerCase(),
+        set: unbox(x[3]),
     }) %}
 
 simplestatements_set_val
