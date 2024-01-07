@@ -1,9 +1,9 @@
 {
-  "name": "pgsql-ast-parser",
-  "version": "11.1.0",
-  "description": "Yet another simple Postgres SQL parser/modifier",
+  "name": "@secam/pgsql-ast-parser",
+  "version": "11.2.0",
+  "description": "Fork of pgsql-ast-parser Simple Postgres SQL parser/modifier for pg-mem",
   "main": "index.js",
-  "repository": "https://github.com/oguimbal/pgsql-ast-parser",
+  "repository": "https://github.com/secam/pgsql-ast-parser",
   "scripts": {
     "start": "webpack --config webpack.config.js",
     "build": "rimraf lib && webpack --config webpack.config.js --prod",
@@ -31,29 +31,29 @@
     "ast"
   ],
   "dependencies": {
-    "moo": "^0.5.1",
-    "nearley": "^2.19.5"
+    "moo": "^0.5.2",
+    "nearley": "^2.20.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
-    "@types/mocha": "^8.0.0",
-    "@types/moo": "^0.5.3",
-    "@types/nearley": "^2.11.1",
-    "chai": "^4.2.0",
+    "@types/mocha": "^9.1.1",
+    "@types/moo": "^0.5.9",
+    "@types/nearley": "^2.11.5",
+    "chai": "^4.4.0",
     "copy-webpack-plugin": "^6.0.3",
-    "cross-env": "^7.0.2",
+    "cross-env": "^7.0.3",
     "istanbul-instrumenter-loader": "^3.0.1",
-    "mocha": "^8.0.1",
+    "mocha": "^9.2.2",
     "mochapack": "^2.0.3",
     "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
-    "ts-loader": "^8.0.0",
+    "ts-loader": "^8.4.0",
     "ts-node": "^8.10.2",
-    "typescript": "^4.7.4",
+    "typescript": "^4.9.5",
     "vscode-mocha-hmr": "^1.0.0",
-    "webpack": "^4.43.0",
+    "webpack": "^4.47.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^4.10.0",
+    "webpack-dev-server": "^4.15.1",
     "webpack-node-externals": "^1.7.2"
   },
   "nyc": {
