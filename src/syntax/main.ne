@@ -66,14 +66,10 @@ statement_noprep
     | functions_statements
 
 
-
-any_selection -> select_statement {% unwrap %}
+selection -> select_statement {% unwrap %}
             | select_values {% unwrap %}
             | with_statement {% unwrap %}
             | with_recursive_statement {% unwrap %}
             | union_statement {% unwrap %}
-
-selection -> lparen selection rparen {% get(1) %}
-          | any_selection {% get(0) %}
 
 selection_paren -> lparen selection rparen {% get(1) %}
