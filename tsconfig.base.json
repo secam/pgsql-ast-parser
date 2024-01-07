@@ -1,12 +1,10 @@
 {
-  // === THIS IS THE DEFAULT DENO CONFIGURATION : https://deno.land/manual/getting_started/typescript
   "compilerOptions": {
     "allowJs": true, // This almost never needs to be changed
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "checkJs": false, // If true causes TypeScript to type check JavaScript
     "keyofStringsOnly": false,
-    // "lib": 	[ "deno.window" ], //	The default for this varies based on other settings in Deno. If it is supplied, it overrides the default. See below for more information.
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
     "noImplicitReturns": false,

@@ -254,43 +254,4 @@ describe('Ast mapper', () => {
         expect(mapped).to.deep.equal(target);
     })
 
-
-    it('runs deno test - match', () => {
-        const mapper = astMapper(map => ({
-            tableRef: t => {
-                if (t.name === 'foo') {
-                    return {
-                        ...t,
-                        name: 'bar',
-                    }
-                }
-                return map.super().tableRef(t);
-            }
-        }))
-
-        // parse + map + reconvert to sql
-        const modified = mapper.statement(parseFirst('select * from foo'));
-
-        expect(toSql.statement(modified!)).to.equal(`SELECT *  FROM bar`);
-    })
-
-    it('runs deno test - nomatch', () => {
-        const mapper = astMapper(map => ({
-            tableRef: t => {
-                if (t.name === 'other') {
-                    return {
-                        ...t,
-                        name: 'bar',
-                    }
-                }
-                return map.super().tableRef(t);
-            }
-        }))
-
-        // parse + map + reconvert to sql
-        const modified = mapper.statement(parseFirst('select * from foo'));
-
-        expect(toSql.statement(modified!)).to.equal(`SELECT *  FROM foo`);
-    })
-
 });

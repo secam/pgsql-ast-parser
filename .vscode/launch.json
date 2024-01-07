@@ -16,20 +16,6 @@
                 "node_modules/core-js/**",
                 "output/**",
             ]
-        },
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "Launch Deno",
-            "program": "${workspaceFolder}/deno-test.ts",
-            "cwd": "${workspaceFolder}",
-            "runtimeExecutable": "deno",
-            "runtimeArgs": [
-                "run",
-                "--inspect-brk=127.0.0.1:9229",
-                "--allow-all"
-            ],
-            "attachSimplePort": 9229
         }
     ]
 }
