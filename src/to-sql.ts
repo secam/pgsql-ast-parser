@@ -800,7 +800,10 @@ const visitor = astVisitor<IAstFullVisitor>(m => ({
         ret.push(name(g.variable), ' = ');
         visitSetVal(g.set);
     },
-
+    setNames: g => {
+        ret.push('SET NAMES ');
+        ret.push(literal(g.encoding.value))
+    },
     setTimezone: g => {
         ret.push('SET TIME ZONE ');
         switch (g.to.type) {
@@ -875,6 +878,9 @@ const visitor = astVisitor<IAstFullVisitor>(m => ({
 
     createIndex: c => {
         ret.push(c.unique ? 'CREATE UNIQUE INDEX ' : 'CREATE INDEX ');
+        if (c.concurrently) {
+            ret.push('CONCURRENTLY ');
+        }
         if (c.ifNotExists) {
             ret.push(' IF NOT EXISTS ');
         }
@@ -1042,6 +1048,9 @@ const visitor = astVisitor<IAstFullVisitor>(m => ({
     fromCall: s => {
 
         join(m, s.join, () => {
+            if (s.lateral) {
+                ret.push("LATERAL ")
+            }
             m.call(s);
             if (s.withOrdinality) {
                 ret.push(' WITH ORDINALITY')
@@ -1069,6 +1078,9 @@ const visitor = astVisitor<IAstFullVisitor>(m => ({
 
         // todo: use 's.db' if defined
         join(m, s.join, () => {
+            if (s.lateral) {
+                ret.push("LATERAL ")
+            }
             ret.push('(');
             m.select(s.statement);
             ret.push(') ');

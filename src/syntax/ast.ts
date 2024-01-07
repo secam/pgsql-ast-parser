@@ -31,6 +31,7 @@ export type Statement = SelectStatement
     | AlterIndexStatement
     | AlterSequenceStatement
     | SetGlobalStatement
+    | SetNamesStatement
     | SetTimezone
     | CreateEnumType
     | CreateCompositeType
@@ -409,6 +410,7 @@ export interface CreateIndexStatement extends PGNode {
     where?: Expr;
     unique?: true;
     ifNotExists?: true;
+    concurrently?: true;
     indexName?: Name;
     tablespace?: string;
     with?: CreateIndexWith[];
@@ -656,7 +658,7 @@ export interface ForStatement extends PGNode {
 }
 
 export interface SkipClause extends PGNode {
-    type: 'nowait' | 'skip locked' 
+    type: 'nowait' | 'skip locked'
 }
 
 export interface LimitStatement extends PGNode {
@@ -692,6 +694,7 @@ export type From = FromTable
 export interface FromCall extends ExprCall, PGNode {
     alias?: TableAliasName;
     join?: JoinClause | nil;
+    lateral?: true;
     withOrdinality?: boolean;
 };
 
@@ -715,6 +718,7 @@ export interface QNameMapped extends QNameAliased {
 export interface FromTable extends PGNode {
     type: 'table',
     name: QNameMapped;
+    lateral?: true;
     join?: JoinClause | nil;
 }
 
@@ -722,6 +726,7 @@ export interface FromStatement extends PGNode {
     type: 'statement';
     statement: SelectStatement;
     alias: string;
+    lateral?: true;
     columnNames?: Name[] | nil;
     db?: null | nil;
     join?: JoinClause | nil;
@@ -975,6 +980,15 @@ export interface SetGlobalStatement extends PGNode {
     variable: Name;
     scope?: string;
     set: SetGlobalValue;
+}
+export interface SetNamesStatement extends PGNode {
+    type: 'set names';
+    encoding: SetEncodingValue;
+}
+
+export type SetEncodingValue = {
+    type: 'value';
+    value: string;
 }
 export interface SetTimezone extends PGNode {
     type: 'set timezone',
