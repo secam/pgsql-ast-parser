@@ -8,7 +8,7 @@
     "start": "webpack --config webpack.config.js",
     "build": "rimraf lib && webpack --config webpack.config.js --prod",
     "release": "npm run release-node",
-    "release-node": "git diff --exit-code && npm run test && npm run cover && npm run build && cp -r src lib/src && cd lib && npm publish && cd ..",
+    "release-node": "git diff --exit-code && npm run test && npm run cover && npm run build && cp -r src lib/src && cd lib && npm publish --access=public && cd ..",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "test": "find src -iname '*.spec.ts' | xargs mochapack",
     "cover": "cross-env NODE_ENV=coverage nyc --reporter=lcov --reporter=text npm run test"
