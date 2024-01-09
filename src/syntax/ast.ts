@@ -32,8 +32,10 @@ export type Statement = SelectStatement
     | AlterSequenceStatement
     | SetGlobalStatement
     | SetTimezone
+    | SetNames
     | CreateEnumType
     | CreateCompositeType
+    | AlterEnumType
     | TruncateTableStatement
     | DropStatement
     | CommentStatement
@@ -168,6 +170,27 @@ export interface CreateCompositeType extends PGNode {
     type: 'create composite type';
     name: QName;
     attributes: CompositeTypeAttribute[];
+}
+
+export interface AlterEnumType extends PGNode {
+    type: 'alter enum',
+    name: QName,
+    change: EnumAlteration
+}
+
+export type EnumAlteration
+    = EnumAlterationRename
+    | EnumAlterationAddValue
+
+
+export interface EnumAlterationRename {
+    type: 'rename';
+    to: QName;
+}
+
+export interface EnumAlterationAddValue  {
+    type: 'add value';
+    add: Literal;
 }
 
 export interface CompositeTypeAttribute extends PGNode {
@@ -409,6 +432,7 @@ export interface CreateIndexStatement extends PGNode {
     where?: Expr;
     unique?: true;
     ifNotExists?: true;
+    concurrently?: true;
     indexName?: Name;
     tablespace?: string;
     with?: CreateIndexWith[];
@@ -901,6 +925,8 @@ export interface ExprCall extends PGNode {
     orderBy?: OrderByStatement[] | nil;
     /** [AGGREGATION FUNCTIONS] Filter clause */
     filter?: Expr | nil;
+    /** [AGGREGATION FUNCTIONS] WITHIN GROUP clause */
+    withinGroup?: OrderByStatement | nil;
     /** [AGGREGATION FUNCTIONS] OVER clause */
     over?: CallOver | nil;
 }
@@ -976,6 +1002,7 @@ export interface ExprWhen extends PGNode {
 export interface SetGlobalStatement extends PGNode {
     type: 'set';
     variable: Name;
+    scope?: string;
     set: SetGlobalValue;
 }
 export interface SetTimezone extends PGNode {
@@ -990,6 +1017,16 @@ export type SetTimezoneValue = {
     type: 'local' | 'default';
 } | {
     type: 'interval';
+    value: string;
+};
+
+export interface SetNames extends PGNode {
+    type: 'set names',
+    to: SetNamesValue;
+}
+
+export type SetNamesValue = {
+    type: 'value';
     value: string;
 };
 

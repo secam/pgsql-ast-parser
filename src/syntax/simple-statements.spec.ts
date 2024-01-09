@@ -67,6 +67,26 @@ describe('Simple statements', () => {
         }
     })
 
+    checkStatement(`SET LOCAL lock_timeout = '50ms'`, {
+        type: 'set',
+        variable: { name: 'lock_timeout' },
+        scope: 'local',
+        set: {
+            type: 'value',
+            value: '50ms',
+        }
+    })
+
+    checkStatement(`SET SESSION lock_timeout = '50ms'`, {
+        type: 'set',
+        variable: { name: 'lock_timeout' },
+        scope: 'session',
+        set: {
+            type: 'value',
+            value: '50ms',
+        }
+    })
+
     checkStatement(`SET TIME ZONE INTERVAL '+00:00' HOUR TO MINUTE`, {
         type: 'set timezone',
         to: {
@@ -106,6 +126,13 @@ describe('Simple statements', () => {
         },
     });
 
+    checkStatement(`SET NAMES 'utf8'`, {
+        type: 'set names',
+        to: {
+            type: 'value',
+            value: 'utf8',
+        },
+    });
 
     checkStatement(['create schema test'], {
         type: 'create schema',
