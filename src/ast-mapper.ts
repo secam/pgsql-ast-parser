@@ -15,6 +15,7 @@ export interface IAstPartialMapper {
     raise?: (val: a.RaiseStatement) => a.Statement | nil
     createSchema?: (val: a.CreateSchemaStatement) => a.Statement | nil
     createEnum?(val: a.CreateEnumType): a.Statement | nil
+    alterEnum?(val: a.AlterEnumType): a.Statement | nil
     createCompositeType?(val: a.CreateCompositeType): a.Statement | nil
     drop?: (val: a.DropStatement) => a.Statement | nil
     show?: (val: a.ShowStatement) => a.Statement | nil
@@ -85,6 +86,7 @@ export interface IAstPartialMapper {
     setGlobal?(val: a.SetGlobalStatement): a.Statement | nil
     setNames?(val: a.SetNamesStatement): a.Statement | nil
     setTimezone?(val: a.SetTimezone): a.Statement | nil
+    setNames?(val: a.SetNames): a.Statement | nil
     createSequence?(seq: a.CreateSequenceStatement): a.Statement | nil
     alterSequence?(seq: a.AlterSequenceStatement): a.Statement | nil
     begin?(begin: a.BeginStatement): a.Statement | nil
@@ -252,6 +254,8 @@ export class AstDefaultMapper implements IAstMapper {
                 return this.setNames(val);
             case 'set timezone':
                 return this.setTimezone(val);
+            case 'set names':
+                return this.setNames(val);
             case 'create sequence':
                 return this.createSequence(val);
             case 'alter sequence':
@@ -266,6 +270,8 @@ export class AstDefaultMapper implements IAstMapper {
                 return this.drop(val);
             case 'create enum':
                 return this.createEnum(val);
+            case 'alter enum':
+                return this.alterEnum(val);
             case 'create composite type':
                 return this.createCompositeType(val);
             case 'union':
@@ -399,6 +405,10 @@ export class AstDefaultMapper implements IAstMapper {
         return val;
     }
 
+    alterEnum(val: a.AlterEnumType): a.Statement | nil {
+        return val;
+    }
+
     createCompositeType(val: a.CreateCompositeType): a.Statement | nil {
         const attributes = arrayNilMap(val.attributes, a => assignChanged(a, {
             dataType: this.dataType(a.dataType),
@@ -443,6 +453,9 @@ export class AstDefaultMapper implements IAstMapper {
         return val;
     }
 
+    setNames(val: a.SetNames): a.Statement | nil {
+        return val;
+    }
 
     update(val: a.UpdateStatement): a.Statement | nil {
         if (!val) {
@@ -1241,10 +1254,13 @@ export class AstDefaultMapper implements IAstMapper {
         }
         const orderBy = this.orderBy(val.orderBy);
         const filter = this.expr(val.filter);
+        const withinGroupList = val.withinGroup ? [val.withinGroup] : undefined
+        const withinGroup = this.orderBy(withinGroupList)?.[0];
         return assignChanged(val, {
             args,
             orderBy,
             filter,
+            withinGroup,
         });
     }
 

@@ -34,7 +34,7 @@ simplestatements_tablespace -> kw_tablespace word {% x => track(x, {
  }) %}
 
 
-simplestatements_set -> kw_set (simplestatements_set_simple | simplestatements_set_timezone | simplestatements_set_names_simple) {% last %}
+simplestatements_set -> kw_set (simplestatements_set_simple | simplestatements_set_timezone | simplestatements_set_names) {% last %}
 
 simplestatements_set_timezone -> kw_time kw_zone simplestatements_set_timezone_val {% x => track(x, { type: 'set timezone', to: x[2] }) %}
 
@@ -44,18 +44,17 @@ simplestatements_set_timezone_val
     | %kw_default  {% x => track(x, { type: 'default'}) %}
     | kw_interval string kw_hour %kw_to kw_minute  {% x => track(x, { type: 'interval', value: unbox(x[1]) }) %}
 
+simplestatements_set_names -> kw_names simplestatements_set_names_val {% x => track(x, { type: 'set names', to: x[1] }) %}
+
+simplestatements_set_names_val
+    -> (string) {% x => track(x, { type: 'value', value: unwrap(x[0]) }) %}
+
 simplestatements_set_simple -> (kw_local | kw_session):? ident (%op_eq | %kw_to) simplestatements_set_val {% x  => track(x, {
         type: 'set',
         variable: asName(x[1]),
         scope: unwrap(x[0])?.toLowerCase(),
         set: unbox(x[3]),
     }) %}
-
-simplestatements_set_names_simple
-    -> kw_names simplestatements_set_names_val {% x => track(x, { type: 'set names', encoding: x[1] }) %}
-simplestatements_set_names_val
-    -> string {% x => track(x, { type: 'value', value: unwrap(x[0]) }) %}
-
 
 simplestatements_set_val
     -> simplestatements_set_val_raw {% unwrap %}

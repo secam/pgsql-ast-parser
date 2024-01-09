@@ -33,8 +33,10 @@ export type Statement = SelectStatement
     | SetGlobalStatement
     | SetNamesStatement
     | SetTimezone
+    | SetNames
     | CreateEnumType
     | CreateCompositeType
+    | AlterEnumType
     | TruncateTableStatement
     | DropStatement
     | CommentStatement
@@ -169,6 +171,27 @@ export interface CreateCompositeType extends PGNode {
     type: 'create composite type';
     name: QName;
     attributes: CompositeTypeAttribute[];
+}
+
+export interface AlterEnumType extends PGNode {
+    type: 'alter enum',
+    name: QName,
+    change: EnumAlteration
+}
+
+export type EnumAlteration
+    = EnumAlterationRename
+    | EnumAlterationAddValue
+
+
+export interface EnumAlterationRename {
+    type: 'rename';
+    to: QName;
+}
+
+export interface EnumAlterationAddValue  {
+    type: 'add value';
+    add: Literal;
 }
 
 export interface CompositeTypeAttribute extends PGNode {
@@ -903,6 +926,8 @@ export interface ExprCall extends PGNode {
     orderBy?: OrderByStatement[] | nil;
     /** [AGGREGATION FUNCTIONS] Filter clause */
     filter?: Expr | nil;
+    /** [AGGREGATION FUNCTIONS] WITHIN GROUP clause */
+    withinGroup?: OrderByStatement | nil;
     /** [AGGREGATION FUNCTIONS] OVER clause */
     over?: CallOver | nil;
 }
@@ -1002,6 +1027,16 @@ export type SetTimezoneValue = {
     type: 'local' | 'default';
 } | {
     type: 'interval';
+    value: string;
+};
+
+export interface SetNames extends PGNode {
+    type: 'set names',
+    to: SetNamesValue;
+}
+
+export type SetNamesValue = {
+    type: 'value';
     value: string;
 };
 
