@@ -1,7 +1,7 @@
 import { IAstPartialMapper, AstDefaultMapper } from './ast-mapper';
 import { astVisitor, IAstVisitor, IAstFullVisitor } from './ast-visitor';
 import { NotSupported, nil, ReplaceReturnType, NoExtraProperties } from './utils';
-import { TableConstraint, JoinClause, ColumnConstraint, AlterSequenceStatement, CreateSequenceStatement, AlterSequenceSetOptions, CreateSequenceOptions, QName, SetGlobalValue, AlterColumnAddGenerated, QColumn, Name, OrderByStatement, QNameAliased } from './syntax/ast';
+import { TableConstraint, JoinClause, ColumnConstraint, AlterSequenceSetOptions, CreateSequenceOptions, QName, SetGlobalValue, AlterColumnAddGenerated, QColumn, Name, OrderByStatement, QNameAliased } from './syntax/ast';
 import { literal } from './pg-escape';
 import { sqlKeywords } from './keywords';
 
@@ -816,10 +816,7 @@ const visitor = astVisitor<IAstFullVisitor>(m => ({
         ret.push(name(g.variable), ' = ');
         visitSetVal(g.set);
     },
-    setNames: g => {
-        ret.push('SET NAMES ');
-        ret.push(literal(g.encoding.value))
-    },
+
     setTimezone: g => {
         ret.push('SET TIME ZONE ');
         switch (g.to.type) {

@@ -31,7 +31,6 @@ export type Statement = SelectStatement
     | AlterIndexStatement
     | AlterSequenceStatement
     | SetGlobalStatement
-    | SetNamesStatement
     | SetTimezone
     | SetNames
     | CreateEnumType
@@ -1005,15 +1004,6 @@ export interface SetGlobalStatement extends PGNode {
     variable: Name;
     scope?: string;
     set: SetGlobalValue;
-}
-export interface SetNamesStatement extends PGNode {
-    type: 'set names';
-    encoding: SetEncodingValue;
-}
-
-export type SetEncodingValue = {
-    type: 'value';
-    value: string;
 }
 export interface SetTimezone extends PGNode {
     type: 'set timezone',
