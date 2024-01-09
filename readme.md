@@ -1,13 +1,13 @@
 
 <p align="center">
-  <a href="https://npmjs.org/package/pgsql-ast-parser"><img src="http://img.shields.io/npm/v/pgsql-ast-parser.svg"></a>
-  <a href="https://npmjs.org/package/pgsql-ast-parser"><img src="https://img.shields.io/npm/dm/pgsql-ast-parser.svg"></a>
-  <a href="https://david-dm.org/oguimbal/pgsql-ast-parser"><img src="https://david-dm.org/oguimbal/pgsql-ast-parser.svg"></a>
-  <img src="https://github.com/oguimbal/pgsql-ast-parser/workflows/CI/badge.svg">
+  <a href="https://npmjs.org/package/@secam/pgsql-ast-parser"><img src="http://img.shields.io/npm/v/@secam/pgsql-ast-parser.svg"></a>
+  <a href="https://npmjs.org/package/@secam/pgsql-ast-parser"><img src="https://img.shields.io/npm/dm/@secam/pgsql-ast-parser.svg"></a>
+  <a href="https://david-dm.org/secam/pgsql-ast-parser"><img src="https://david-dm.org/secam/pgsql-ast-parser.svg"></a>
+  <img src="https://github.com/secam/pgsql-ast-parser/workflows/CI/badge.svg">
 </p>
 
 
- <h3 align="center">🏃‍♀️ pgsql-ast-parser is a Postgres SQL syntax parser. It produces a typed AST (Abstract Syntax Tree), covering the most common syntaxes of pgsql.</h3>
+ <h3 align="center">Fork of 🏃‍♀️ pgsql-ast-parser is a Postgres SQL syntax parser. It produces a typed AST (Abstract Syntax Tree), covering the most common syntaxes of pgsql.</h3>
 
 <p align="center">
 ❤ It works both in node or in browser.
@@ -24,7 +24,7 @@
 
 
 <p align="center">
-  🔗 This parser has been created to implement <a href="https://github.com/oguimbal/pg-mem">pg-mem</a>, an in-memory postgres db emulator. 👉  <a href="https://oguimbal.github.io/pg-mem-playground/">play with it here</a>
+  🔗 This parser has been created to implement <a href="https://github.com/secam/pg-mem">pg-mem</a>, an in-memory postgres db emulator. 👉  <a href="https://oguimbal.github.io/pg-mem-playground/">play with it here</a>
  </p>
 
 
@@ -37,7 +37,7 @@
 ## With NodeJS
 
 ```bash
-npm i pgsql-ast-parser
+npm i @secam/pgsql-ast-parser
 ```
 
 # 📖 Parsing SQL
@@ -68,7 +68,7 @@ Here is an example which lists all the tables used in a request, and which count
 
 ```typescript
 
-import { astVisitor, parse } from 'pgsql-ast-parser';
+import { astVisitor, parse } from '@secam/pgsql-ast-parser';
 
 const tables = new Set();
 let joins = 0;
@@ -104,7 +104,7 @@ You'll find that AST visitors (that's the name of this pattern) are quite flexib
 That's super easy:
 
 ```typescript
-import { toSql } from 'pgsql-ast-parser';
+import { toSql } from '@secam/pgsql-ast-parser';
 
 const sql: string = toSql.statement(myAst);
 
@@ -122,7 +122,7 @@ There is a special kind of visitor, which I called [astMapper](/src/ast-mapper.t
 For instance, you could rename a table in a request like this:
 
 ```typescript
-import { toSql, parseFirst, astMapper } from 'pgsql-ast-parser';
+import { toSql, parseFirst, astMapper } from '@secam/pgsql-ast-parser';
 
 // create a mapper
 const mapper = astMapper(map => ({
